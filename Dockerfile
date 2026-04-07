@@ -21,12 +21,11 @@ ENV PATH="/root/.bun/bin:${PATH}"
 # Install hex + rebar
 RUN mix local.hex --force && mix local.rebar --force
 
-# Install Playwright system deps (needs apt)
+# Pre-install Playwright system dependencies (apt packages for Chromium)
+# Browsers are NOT pre-installed — the project's npm ci + npx playwright install
+# will install the version matching the project's package-lock.json
 RUN apt-get update \
     && npx -y playwright install-deps chromium \
     && rm -rf /var/lib/apt/lists/*
-
-# Install Playwright browsers
-RUN npx -y playwright install chromium
 
 WORKDIR /app
