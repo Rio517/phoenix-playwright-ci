@@ -1,8 +1,11 @@
-FROM elixir:1.18.3-otp-27
+FROM hexpm/elixir:1.19.5-erlang-28.4.2-debian-trixie-20260406-slim
 
-# System deps for Node and Playwright
+# Keep in sync with the platform/Dockerfile in Glidedeck/proofofconcept.
+
+# System deps for Node and Playwright + build tools needed by Elixir NIFs
+# (bcrypt_elixir, etc.). git is required for safe.directory + hex resolvers.
 RUN apt-get update \
-    && apt-get install -y ca-certificates curl gnupg unzip \
+    && apt-get install -y build-essential ca-certificates curl git gnupg unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Node.js 22
